@@ -35,6 +35,10 @@ return [
             'root' => storage_path('app'),
             'throw' => false,
         ],
+        'personas' => [
+            'driver' => 'local',
+            'root' => public_path('imagenes/persona'),
+        ],
 
         'public' => [
             'driver' => 'local',
