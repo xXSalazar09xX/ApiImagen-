@@ -9,15 +9,24 @@ class PersonaController extends Controller
 {
     public function saveImage(Request $request){
         $persona= new Persona();
-        $persona->nombre=$request->nombre;
-        
+       
+        try {
+            
+            $image = $request()->file('imagen');
+            $file=time().$image->getClientOriginalName();
+            Storage::disk('personas')->put($file, file_get_contents($image));
+          
+            $persona->nombre=$request->nombre;
+            $persona->nombre=$request->$file;
+            $persona->save();
 
-        $image = $request()->file('imagen');
-        $file=time().$image->getClientOriginalName();
-        Storage::disk('personas')->put($file, file_get_contents($image));
+        } catch (\Throwable $th) {
+            return response()->json(['Error' => 'Error al guardar']);
+        }
 
-        $persona->nombre=$request->$file;
-        $persona->save();
+       
+
+       
 
 
         return response()->json(['message' => 'Datos guardados correctamente']);
